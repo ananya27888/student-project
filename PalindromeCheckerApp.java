@@ -1,14 +1,14 @@
 import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-class PalindromeChecker {
+interface PalindromeStrategy {
+    boolean check(String value);
+}
 
-    private String value;
+class StackStrategy implements PalindromeStrategy {
 
-    public PalindromeChecker(String value) {
-        this.value = value;
-    }
-
-    public boolean checkPalindrome() {
+    public boolean check(String value) {
         if (value == null)
             return false;
 
@@ -26,10 +26,51 @@ class PalindromeChecker {
     }
 }
 
+class DequeStrategy implements PalindromeStrategy {
+
+    public boolean check(String value) {
+        if (value == null)
+            return false;
+
+        String normalized = value.replaceAll("\\s+", "").toLowerCase();
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (int i = 0; i < normalized.length(); i++)
+            deque.addLast(normalized.charAt(i));
+
+        while (deque.size() > 1)
+            if (!deque.removeFirst().equals(deque.removeLast()))
+                return false;
+
+        return true;
+    }
+}
+
+class PalindromeService {
+
+    private PalindromeStrategy strategy;
+
+    public PalindromeService(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public void setStrategy(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean checkPalindrome(String value) {
+        return strategy.check(value);
+    }
+}
+
 public class Main {
 
     public static void main(String[] args) {
-        PalindromeChecker checker = new PalindromeChecker("Level");
-        System.out.println("Is Palindrome: " + checker.checkPalindrome());
+        PalindromeService service = new PalindromeService(new StackStrategy());
+        System.out.println("Stack Strategy: " + service.checkPalindrome("Madam"));
+
+        service.setStrategy(new DequeStrategy());
+        System.out.println("Deque Strategy: " + service.checkPalindrome("Racecar"));
     }
+
 }
