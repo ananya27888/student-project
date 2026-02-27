@@ -1,18 +1,25 @@
-public class UseCase2PalindromeCheckerApp {
+class PalindromeCheckerRecursive {
+
+    static boolean isPalindrome(String str) {
+        if (str == null)
+            return false;
+        return checkPalindrome(str, 0, str.length() - 1);
+    }
+
+    static boolean checkPalindrome(String str, int start, int end) {
+        if (start >= end)
+            return true;
+
+        if (str.charAt(start) != str.charAt(end))
+            return false;
+
+        return checkPalindrome(str, start + 1, end - 1);
+    }
 
     public static void main(String[] args) {
-        String word = "madam";
-        String reversed = "";
-        for (int i = word.length() - 1; i >= 0; i--) {
-            reversed = reversed + word.charAt(i);
-        }
-        if (word.equals(reversed)) {
-            System.out.println(word + " is a Palindrome.");
-        } else {
-            System.out.println(word + " is NOT a Palindrome.");
-        }
-
-
-        
+        String input = "racecar";
+        boolean result = isPalindrome(input);
+        System.out.println("Is Palindrome: " + result);
     }
+
 }
