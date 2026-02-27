@@ -1,33 +1,35 @@
-class PalindromeCheckerNormalized {
+import java.util.Stack;
 
-    static boolean isPalindrome(String str) {
-        if (str == null)
+class PalindromeChecker {
+
+    private String value;
+
+    public PalindromeChecker(String value) {
+        this.value = value;
+    }
+
+    public boolean checkPalindrome() {
+        if (value == null)
             return false;
 
-        String normalized = str.replaceAll("\\s+", "").toLowerCase();
+        String normalized = value.replaceAll("\\s+", "").toLowerCase();
+        Stack<Character> stack = new Stack<>();
 
-        int left = 0;
-        int right = normalized.length() - 1;
+        for (int i = 0; i < normalized.length(); i++)
+            stack.push(normalized.charAt(i));
 
-        while (left < right) {
-            if (normalized.charAt(left) != normalized.charAt(right))
+        for (int i = 0; i < normalized.length(); i++)
+            if (normalized.charAt(i) != stack.pop())
                 return false;
-            left++;
-            right--;
-        }
 
         return true;
-
-
     }
+}
 
-
+public class Main {
 
     public static void main(String[] args) {
-        String input = "A man a plan a canal Panama";
-        boolean result = isPalindrome(input);
-        System.out.println("Is Palindrome: " + result);
+        PalindromeChecker checker = new PalindromeChecker("Level");
+        System.out.println("Is Palindrome: " + checker.checkPalindrome());
     }
-
-
 }
