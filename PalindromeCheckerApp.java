@@ -17,12 +17,17 @@ class PalindromeCheckerNormalized {
         }
 
         return true;
+
+
     }
+
+
 
     public static void main(String[] args) {
         String input = "A man a plan a canal Panama";
         boolean result = isPalindrome(input);
         System.out.println("Is Palindrome: " + result);
     }
+
 
 }
