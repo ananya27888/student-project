@@ -6,6 +6,26 @@ interface PalindromeStrategy {
     boolean check(String value);
 }
 
+class IterativeStrategy implements PalindromeStrategy {
+
+    public boolean check(String value) {
+        if (value == null)
+            return false;
+
+        String normalized = value.replaceAll("\\s+", "").toLowerCase();
+        int left = 0;
+        int right = normalized.length() - 1;
+
+        while (left < right) {
+            if (normalized.charAt(left) != normalized.charAt(right))
+                return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+
 class StackStrategy implements PalindromeStrategy {
 
     public boolean check(String value) {
@@ -46,31 +66,22 @@ class DequeStrategy implements PalindromeStrategy {
     }
 }
 
-class PalindromeService {
+public class PerformanceComparison {
 
-    private PalindromeStrategy strategy;
-
-    public PalindromeService(PalindromeStrategy strategy) {
-        this.strategy = strategy;
+    static void measure(String name, PalindromeStrategy strategy, String input) {
+        long start = System.nanoTime();
+        boolean result = strategy.check(input);
+        long end = System.nanoTime();
+        System.out.println(name + " Result: " + result +
+                " | Time(ns): " + (end - start));
     }
-
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean checkPalindrome(String value) {
-        return strategy.check(value);
-    }
-}
-
-public class Main {
 
     public static void main(String[] args) {
-        PalindromeService service = new PalindromeService(new StackStrategy());
-        System.out.println("Stack Strategy: " + service.checkPalindrome("Madam"));
 
-        service.setStrategy(new DequeStrategy());
-        System.out.println("Deque Strategy: " + service.checkPalindrome("Racecar"));
+        String input = "A man a plan a canal Panama";
+
+        measure("Iterative", new IterativeStrategy(), input);
+        measure("Stack", new StackStrategy(), input);
+        measure("Deque", new DequeStrategy(), input);
     }
-
 }
