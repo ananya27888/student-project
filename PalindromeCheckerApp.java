@@ -1,87 +1,41 @@
+import java.util.Scanner;
 import java.util.Stack;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Queue;
+import java.util.LinkedList;
 
-interface PalindromeStrategy {
-    boolean check(String value);
-}
-
-class IterativeStrategy implements PalindromeStrategy {
-
-    public boolean check(String value) {
-        if (value == null)
-            return false;
-
-        String normalized = value.replaceAll("\\s+", "").toLowerCase();
-        int left = 0;
-        int right = normalized.length() - 1;
-
-        while (left < right) {
-            if (normalized.charAt(left) != normalized.charAt(right))
-                return false;
-            left++;
-            right--;
-        }
-        return true;
-    }
-}
-
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean check(String value) {
-        if (value == null)
-            return false;
-
-        String normalized = value.replaceAll("\\s+", "").toLowerCase();
-        Stack<Character> stack = new Stack<>();
-
-        for (int i = 0; i < normalized.length(); i++)
-            stack.push(normalized.charAt(i));
-
-        for (int i = 0; i < normalized.length(); i++)
-            if (normalized.charAt(i) != stack.pop())
-                return false;
-
-        return true;
-    }
-}
-
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean check(String value) {
-        if (value == null)
-            return false;
-
-        String normalized = value.replaceAll("\\s+", "").toLowerCase();
-        Deque<Character> deque = new ArrayDeque<>();
-
-        for (int i = 0; i < normalized.length(); i++)
-            deque.addLast(normalized.charAt(i));
-
-        while (deque.size() > 1)
-            if (!deque.removeFirst().equals(deque.removeLast()))
-                return false;
-
-        return true;
-    }
-}
-
-public class PerformanceComparison {
-
-    static void measure(String name, PalindromeStrategy strategy, String input) {
-        long start = System.nanoTime();
-        boolean result = strategy.check(input);
-        long end = System.nanoTime();
-        System.out.println(name + " Result: " + result +
-                " | Time(ns): " + (end - start));
-    }
+public class UseCase6PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        String input = "A man a plan a canal Panama";
+        Scanner scanner = new Scanner(System.in);
 
-        measure("Iterative", new IterativeStrategy(), input);
-        measure("Stack", new StackStrategy(), input);
-        measure("Deque", new DequeStrategy(), input);
+        System.out.println("Enter a string to check if it is a palindrome:");
+        String input = scanner.nextLine();
+
+        Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
+
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            stack.push(ch);
+            queue.add(ch);
+        }
+
+        boolean isPalindrome = true;
+
+        for (int i = 0; i < input.length(); i++) {
+            if (!queue.remove().equals(stack.pop())) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        if (isPalindrome) {
+            System.out.println("The string \"" + input + "\" is a palindrome.");
+        } else {
+            System.out.println("The string \"" + input + "\" is not a palindrome.");
+        }
+
+        scanner.close();
     }
 }
