@@ -1,18 +1,41 @@
-public class UseCase2PalindromeCheckerApp {
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
+
+public class UseCase6PalindromeCheckerApp {
 
     public static void main(String[] args) {
-        String word = "madam";
-        String reversed = "";
-        for (int i = word.length() - 1; i >= 0; i--) {
-            reversed = reversed + word.charAt(i);
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter a string to check if it is a palindrome:");
+        String input = scanner.nextLine();
+
+        Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
+
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            stack.push(ch);
+            queue.add(ch);
         }
-        if (word.equals(reversed)) {
-            System.out.println(word + " is a Palindrome.");
+
+        boolean isPalindrome = true;
+
+        for (int i = 0; i < input.length(); i++) {
+            if (!queue.remove().equals(stack.pop())) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        if (isPalindrome) {
+            System.out.println("The string \"" + input + "\" is a palindrome.");
         } else {
-            System.out.println(word + " is NOT a Palindrome.");
+            System.out.println("The string \"" + input + "\" is not a palindrome.");
         }
 
-
-        
+        scanner.close();
     }
 }
