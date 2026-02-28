@@ -1,8 +1,6 @@
 import java.util.Scanner;
-import java.util.Deque;
-import java.util.LinkedList;
 
-public class UseCase7PalindromeCheckerApp {
+public class UseCase4PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
@@ -11,19 +9,19 @@ public class UseCase7PalindromeCheckerApp {
         System.out.println("Enter a string to check if it is a palindrome:");
         String input = scanner.nextLine();
 
-        Deque<Character> deque = new LinkedList<>();
+        char[] characters = input.toCharArray();
 
-        for (int i = 0; i < input.length(); i++) {
-            deque.addLast(input.charAt(i));
-        }
-
+        int start = 0;
+        int end = characters.length - 1;
         boolean isPalindrome = true;
 
-        while (deque.size() > 1) {
-            if (!deque.removeFirst().equals(deque.removeLast())) {
+        while (start < end) {
+            if (characters[start] != characters[end]) {
                 isPalindrome = false;
                 break;
             }
+            start++;
+            end--;
         }
 
         if (isPalindrome) {
